@@ -8,10 +8,13 @@ import (
 	"crypto/x509/pkix"
 	"encoding/hex"
 	"fmt"
-	"gocert/internal/logger"
 	"gocert/models"
+	"net"
 	"strings"
+	"time"
 )
+
+const timeout = 1 * time.Second
 
 // Certificate.Issuer
 // https://pkg.go.dev/crypto/x509#Certificate.Issuer
@@ -20,11 +23,15 @@ func GetCert(domain string) ([]*x509.Certificate, error) {
 	conf := &tls.Config{
 		InsecureSkipVerify: true,
 	}
+
+	dialer := &net.Dialer{
+		Timeout: timeout,
+	}
 	addr := fmt.Sprintf("%s:443", domain)
 	// fmt.Println(addr)
-	conn, err := tls.Dial("tcp", addr, conf)
+	// conn, err := tls.Dial("tcp", addr, conf)
+	conn, err := tls.DialWithDialer(dialer, "tcp", addr, conf)
 	if err != nil {
-		logger.InfoLog.Printf("Can't connect to %s: %d", addr, err)
 		return nil, err
 	}
 	defer conn.Close()

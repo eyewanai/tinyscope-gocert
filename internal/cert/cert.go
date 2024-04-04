@@ -5,6 +5,8 @@ import (
 	"gocert/internal/utils"
 	"gocert/models"
 	"strings"
+
+	"github.com/cheggaaa/pb/v3"
 )
 
 func Parse(domain string) (*models.CertificateMetadata, error) {
@@ -35,14 +37,21 @@ func ParseFromFile(path_to_file string) ([]models.CertificateMetadata, error) {
 			return nil, err
 		}
 
+		count := len(domains)
+		bar := pb.StartNew(count)
+
 		for _, domain := range domains {
 			certMetadata, err := Parse(domain)
 			if err != nil {
 				fmt.Printf("Can't get certificate for %s: %v\n", domain, err)
+				bar.Increment()
 				continue
 			}
 			certificatesMetadata = append(certificatesMetadata, *certMetadata)
+			bar.Increment()
 		}
+
+		bar.Finish()
 
 		return certificatesMetadata, nil
 

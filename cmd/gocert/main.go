@@ -12,7 +12,8 @@ import (
 func main() {
 
 	domainPtr := flag.String("d", "", "Domain name")
-	filePtr := flag.String("f", "", "Path to file")
+	inputFilePtr := flag.String("f", "", "Input file")
+	outputFilePtr := flag.String("o", "", "Output file")
 	helpPtr := flag.Bool("h", false, "Help")
 
 	flag.Parse()
@@ -22,15 +23,18 @@ func main() {
 		return
 	}
 
-	if *domainPtr != "" && *filePtr != "" {
+	if *domainPtr != "" && *inputFilePtr != "" {
 		fmt.Println("You can't provide both domain and path")
 		return
 	}
 
-	if *domainPtr == "" && *filePtr == "" {
-		fmt.Println("Please provide a domain or a file:")
-		fmt.Println("./gocert -d 'domain'")
-		fmt.Println("./gocert -f 'file'")
+	if *domainPtr == "" && *inputFilePtr == "" {
+		fmt.Println("Please provide a domain or a file")
+		return
+	}
+
+	if *inputFilePtr != "" && *outputFilePtr == "" {
+		fmt.Println("Please provide output file -o 'output_file'")
 		return
 	}
 
@@ -42,12 +46,13 @@ func main() {
 			panic(err)
 		}
 	} else {
-		certificatesMetadata, err := cert.ParseFromFile(*filePtr)
+
+		certificatesMetadata, err := cert.ParseFromFile(*inputFilePtr)
 		if err != nil {
 			fmt.Printf("Can't read data from file: %v", err)
 		}
 		jsonData, _ := json.MarshalIndent(certificatesMetadata, "", "  ")
-		err = utils.WriteToJSON(jsonData, "test.json")
+		err = utils.WriteToJSON(jsonData, *outputFilePtr)
 		if err != nil {
 			fmt.Printf("Can't write to json file: %v\n", err)
 		}
