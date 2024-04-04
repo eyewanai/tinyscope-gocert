@@ -1,37 +1,29 @@
 package main
 
 import (
+	"encoding/json"
+	"flag"
 	"fmt"
 	"gocert/internal/cert"
 )
 
 func main() {
-	domain := "https://vtb.ru/"
 
-	certs, err := cert.GetCert(domain)
+	domainPtr := flag.String("d", "", "Domain name")
+
+	flag.Parse()
+
+	if *domainPtr == "" {
+		fmt.Println("Please provide a domain:\ngo run main.go -d 'domain'")
+		return
+	}
+
+	parsedCert, err := cert.Parse(*domainPtr)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(len(certs))
 
-	certificate := certs[0]
-	sha1 := cert.SHA1Fingerprint(certificate.Raw)
-	sha256 := cert.SHA256Fingerprint(certificate.Raw)
-	fmt.Println("sha1", sha1)
-	fmt.Println("sha256", sha256)
-	fmt.Println(certificate.Issuer)
-	issuer := cert.ParseIssuer(certificate.Issuer)
-	fmt.Printf("%#v\n", issuer)
+	jsonData, _ := json.MarshalIndent(parsedCert, "", "  ")
+	fmt.Println(string(jsonData))
 
-	fingerprints := cert.ParseFingerprints(certificate.Raw)
-	fmt.Printf("%#v\n", fingerprints)
-
-	fmt.Println(certificate.DNSNames)
-
-	san := cert.ParseSAN(certificate)
-	fmt.Printf("%#v\n", san)
-
-	// jsonData, _ := json.MarshalIndent(san, "", "    ")
-	// fmt.Println(string(jsonData))
-	fmt.Printf("%#v\n", cert.ParseSigAlgorithm(certificate))
 }
