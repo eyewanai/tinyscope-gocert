@@ -21,8 +21,11 @@ jobs:
       with:
         go-version: '1.22.1'
     
-    - name: Set up persmissions
-      run: chmod +x build.sh
+    - name: Run linting
+      run: golangci-lint run
 
-    - name: Build
-      run: ./build.sh
+    - name: Run tests
+      run: chmod +x run_tests.sh && ./run_tests.sh
+
+    - name: Run build script
+      run: chmod +x build.sh && ./build.sh

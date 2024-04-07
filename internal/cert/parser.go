@@ -94,8 +94,13 @@ func ParseSigAlgorithm(certificate *x509.Certificate) models.SigAlgorithm {
 func NormalizeURL(input string) string {
 	input = strings.TrimPrefix(input, "https://")
 	input = strings.TrimPrefix(input, "http://")
+	input = strings.TrimPrefix(input, "ftp://")
 	input = strings.TrimSuffix(input, "/")
 
+	parts := strings.Split(input, "/")
+	if len(parts) > 0 {
+		return parts[0]
+	}
 	return input
 }
 
