@@ -9,18 +9,14 @@ import (
 	"github.com/cheggaaa/pb/v3"
 )
 
-func Parse(domain string) (*models.CertificateMetadata, error) {
+func Parse(domain string, timeout int) (*models.CertificateMetadata, error) {
 	domain = NormalizeURL(domain)
-	certificates, err := GetCert(domain)
+	certificates, err := GetCert(domain, timeout)
 	if err != nil {
 		return nil, err
 	}
 
 	certificate := certificates[0]
-	// json_cert, _ := json.MarshalIndent(certificate, "", "  ")
-	// fmt.Println(string(json_cert))
-
-	// fmt.Println(hexSerialNumber)
 
 	return &models.CertificateMetadata{
 		DomainName:              domain,
@@ -33,7 +29,7 @@ func Parse(domain string) (*models.CertificateMetadata, error) {
 	}, nil
 }
 
-func ParseFromFile(filePath string) ([]models.CertificateMetadata, error) {
+func ParseFromFile(filePath string, timeout int) ([]models.CertificateMetadata, error) {
 	var certificatesMetadata []models.CertificateMetadata
 
 	splitPath := strings.Split(filePath, ".")
@@ -48,7 +44,7 @@ func ParseFromFile(filePath string) ([]models.CertificateMetadata, error) {
 		bar := pb.StartNew(count)
 
 		for _, domain := range domains {
-			certMetadata, err := Parse(domain)
+			certMetadata, err := Parse(domain, timeout)
 			if err != nil {
 				fmt.Printf("Can't get certificate for %s: %v\n", domain, err)
 				bar.Increment()

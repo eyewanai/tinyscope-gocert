@@ -16,29 +16,40 @@ func main() {
 	var domain string
 	var inputFile string
 	var outputFile string
+	var timeout int
 
 	app := &cli.App{
+		Name:      "teenydomains-gocert",
+		Usage:     "Find SSL certificate information for a given domain",
+		UsageText: "./gocert [global options]",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:        "domain",
 				Aliases:     []string{"d"},
 				Value:       "",
-				Usage:       "get certificate for given domain",
+				Usage:       "Specify the domain to find SSL certificate information for",
 				Destination: &domain,
 			},
 			&cli.StringFlag{
 				Name:        "file",
 				Aliases:     []string{"f"},
 				Value:       "",
-				Usage:       "input file with domains",
+				Usage:       "Specify the file path containing a list of domains",
 				Destination: &inputFile,
 			},
 			&cli.StringFlag{
 				Name:        "output",
 				Aliases:     []string{"o"},
 				Value:       "",
-				Usage:       "specify the JSON file to which data will be saved",
+				Usage:       "Optionally save data to a JSON file. If not provided, data will be printed to stdout",
 				Destination: &outputFile,
+			},
+			&cli.IntFlag{
+				Name:        "timeout",
+				Aliases:     []string{"t"},
+				Value:       3,
+				Usage:       "Set the timeout in seconds for establishing connections. Set to 0 to disable timeouts.",
+				Destination: &timeout,
 			},
 		},
 		Action: func(cCtx *cli.Context) error {
@@ -49,9 +60,9 @@ func main() {
 			start := time.Now()
 
 			if domain != "" {
-				certData, err = cert.Parse(domain)
+				certData, err = cert.Parse(domain, timeout)
 			} else if inputFile != "" {
-				certData, err = cert.ParseFromFile(inputFile)
+				certData, err = cert.ParseFromFile(inputFile, timeout)
 			} else {
 				return fmt.Errorf("missing domain or input file")
 			}
@@ -60,7 +71,6 @@ func main() {
 				return err
 			}
 
-			// Perform the JSON marshaling operation after getting the certificate data
 			jsonData, err = json.MarshalIndent(certData, "", "  ")
 			if err != nil {
 				return err

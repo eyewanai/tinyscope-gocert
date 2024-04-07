@@ -14,18 +14,16 @@ import (
 	"time"
 )
 
-const timeout = 1 * time.Second
-
 // Certificate.Issuer
 // https://pkg.go.dev/crypto/x509#Certificate.Issuer
 
-func GetCert(domain string) ([]*x509.Certificate, error) {
+func GetCert(domain string, timeout int) ([]*x509.Certificate, error) {
 	conf := &tls.Config{
 		InsecureSkipVerify: true,
 	}
 
 	dialer := &net.Dialer{
-		Timeout: timeout,
+		Timeout: time.Duration(timeout) * time.Second,
 	}
 	addr := fmt.Sprintf("%s:443", domain)
 	conn, err := tls.DialWithDialer(dialer, "tcp", addr, conf)
