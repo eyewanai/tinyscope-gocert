@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 )
 
@@ -37,6 +38,8 @@ func WriteToJSON(jsonData []byte, filePath string) error {
 	if err != nil {
 		return err
 	}
+
+	fmt.Printf("Output file saved to: %s\n", filePath)
 
 	return nil
 }
