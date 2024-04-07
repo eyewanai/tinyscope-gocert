@@ -26,13 +26,13 @@ func Parse(domain string) (*models.CertificateMetadata, error) {
 	}, nil
 }
 
-func ParseFromFile(path_to_file string) ([]models.CertificateMetadata, error) {
+func ParseFromFile(filePath string) ([]models.CertificateMetadata, error) {
 	var certificatesMetadata []models.CertificateMetadata
 
-	splitPath := strings.Split(path_to_file, ".")
+	splitPath := strings.Split(filePath, ".")
 	fileExtension := splitPath[len(splitPath)-1]
 	if fileExtension == "txt" {
-		domains, err := utils.ReadTxtFile(path_to_file)
+		domains, err := utils.ReadTxtFile(filePath)
 		if err != nil {
 			return nil, err
 		}
