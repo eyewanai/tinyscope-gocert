@@ -1,6 +1,6 @@
 # teenydomains-gocert
 
-gocert is a command-line tool written in Go for retrieving SSL certificate information for a given domain. It allows you to find detailed information about SSL certificates, similar to the functionality provided by crt.sh.
+gocert is a command-line tool written in Go for retrieving SSL certificate information for a given domain. It allows you to find detailed information about SSL certificates, similar to the functionality provided by [crt.sh](https://crt.sh).
 
 ## Installation
 
