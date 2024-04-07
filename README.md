@@ -11,7 +11,7 @@ This project has been tested on Go version go1.22.1 on Darwin/arm64 architecture
 1. Clone this repository to your local machine:
 
     ```bash
-    git clone https://github.com/yourusername/gocert.git
+    git clone https://github.com/eyewanai/teenydomains-gocert.git
     ```
 
 2. Navigate to the project directory:
