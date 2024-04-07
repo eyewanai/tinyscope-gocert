@@ -17,7 +17,7 @@ This project has been tested on Go version go1.22.1 on Darwin/arm64 architecture
 2. Navigate to the project directory:
 
     ```bash
-    cd gocert
+    cd teenydomains-gocert
     ```
 
 3. Run the build script to compile the project:
