@@ -17,9 +17,15 @@ func Parse(domain string) (*models.CertificateMetadata, error) {
 	}
 
 	certificate := certificates[0]
+	// json_cert, _ := json.MarshalIndent(certificate, "", "  ")
+	// fmt.Println(string(json_cert))
+
+	// fmt.Println(hexSerialNumber)
 
 	return &models.CertificateMetadata{
 		DomainName:              domain,
+		SerialNumber:            ParseSerialNumber(certificate),
+		Validity:                ParseValidity(certificate),
 		CertificateFingerprints: ParseFingerprints(certificate.Raw),
 		SignatureAlgorithm:      ParseSigAlgorithm(certificate),
 		SubjectAlternativeNames: ParseSAN(certificate),

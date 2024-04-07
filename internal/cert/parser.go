@@ -28,8 +28,6 @@ func GetCert(domain string) ([]*x509.Certificate, error) {
 		Timeout: timeout,
 	}
 	addr := fmt.Sprintf("%s:443", domain)
-	// fmt.Println(addr)
-	// conn, err := tls.Dial("tcp", addr, conf)
 	conn, err := tls.DialWithDialer(dialer, "tcp", addr, conf)
 	if err != nil {
 		return nil, err
@@ -39,6 +37,19 @@ func GetCert(domain string) ([]*x509.Certificate, error) {
 	certs := conn.ConnectionState().PeerCertificates
 
 	return certs, nil
+}
+
+func ParseValidity(certificate *x509.Certificate) models.Validity {
+	return models.Validity{
+		NotBefore: certificate.NotBefore,
+		NotAfter:  certificate.NotAfter,
+	}
+}
+
+func ParseSerialNumber(certificate *x509.Certificate) string {
+	hexSerialNumber := "0" + fmt.Sprintf("%x", certificate.SerialNumber)
+	byteSerialNumber, _ := hex.DecodeString(hexSerialNumber)
+	return hexSplit(byteSerialNumber)
 }
 
 func ParseIssuer(issuer pkix.Name) models.Subject {

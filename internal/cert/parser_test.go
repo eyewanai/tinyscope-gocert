@@ -94,6 +94,21 @@ func TestParseIssuer(t *testing.T) {
 	}
 }
 
+func TestParseSerialNumber(t *testing.T) {
+	want := "07:5b:ce:f3:06:89:c8:ad:df:13:e5:1a:f4:af:e1:87"
+
+	domain := "example.com"
+	certificates, _ := GetCert(domain)
+	certificate := certificates[0]
+
+	serialNumber := ParseSerialNumber(certificate)
+
+	if serialNumber != want {
+		t.Errorf("Value field mismatch: got %s, want %s", serialNumber, want)
+	}
+
+}
+
 func TestNormalizeURL(t *testing.T) {
 	tests := []struct {
 		input    string

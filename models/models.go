@@ -1,6 +1,9 @@
 package models
 
-import "crypto/x509/pkix"
+import (
+	"crypto/x509/pkix"
+	"time"
+)
 
 type CertIssuer pkix.Name
 
@@ -29,8 +32,15 @@ type SigAlgorithm struct {
 	Value     string
 }
 
+type Validity struct {
+	NotBefore time.Time
+	NotAfter  time.Time
+}
+
 type CertificateMetadata struct {
 	DomainName              string
+	SerialNumber            string
+	Validity                Validity
 	CertificateFingerprints CertFingerprints
 	SignatureAlgorithm      SigAlgorithm
 	SubjectAlternativeNames SAN
