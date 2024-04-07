@@ -34,4 +34,5 @@ type CertificateMetadata struct {
 	CertificateFingerprints CertFingerprints
 	SignatureAlgorithm      SigAlgorithm
 	SubjectAlternativeNames SAN
+	Issuer                  Subject
 }

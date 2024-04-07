@@ -68,6 +68,32 @@ func TestFingerprints(t *testing.T) {
 	}
 }
 
+func TestParseIssuer(t *testing.T) {
+	want := map[string]string{
+		"CommonName":       "DigiCert Global G2 TLS RSA SHA256 2020 CA1",
+		"OrganizationName": "DigiCert Inc",
+		"CountryName":      "US",
+	}
+
+	domain := "example.com"
+	certificates, _ := GetCert(domain)
+	certificate := certificates[0]
+
+	issuer := ParseIssuer(certificate.Issuer)
+
+	if issuer.CommonName != want["CommonName"] {
+		t.Errorf("Value field mismatch: got %s, want %s", issuer.CommonName, want["CommonName"])
+	}
+
+	if issuer.OrganizationName != want["OrganizationName"] {
+		t.Errorf("Value field mismatch: got %s, want %s", issuer.OrganizationName, want["OrganizationName"])
+	}
+
+	if issuer.CountryName != want["CountryName"] {
+		t.Errorf("Value field mismatch: got %s, want %s", issuer.CountryName, want["CountryName"])
+	}
+}
+
 func TestNormalizeURL(t *testing.T) {
 	tests := []struct {
 		input    string

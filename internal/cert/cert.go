@@ -23,6 +23,7 @@ func Parse(domain string) (*models.CertificateMetadata, error) {
 		CertificateFingerprints: ParseFingerprints(certificate.Raw),
 		SignatureAlgorithm:      ParseSigAlgorithm(certificate),
 		SubjectAlternativeNames: ParseSAN(certificate),
+		Issuer:                  ParseIssuer(certificate.Issuer),
 	}, nil
 }
 
