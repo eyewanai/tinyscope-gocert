@@ -4,7 +4,9 @@ gocert is a command-line tool written in Go for retrieving SSL certificate infor
 
 ## Installation
 
-To install gocert, ensure you have Go installed on your system. This project has been tested on Go version go1.22.1 on Darwin/arm64 architecture.
+To install gocert, ensure you have Go installed on your system.
+If you haven't installed Go yet, you can download and install it from the [official Go website](https://go.dev/doc/install).
+This project has been tested on Go version go1.22.1 on Darwin/arm64 architecture.
 
 1. Clone this repository to your local machine:
 
@@ -32,7 +34,7 @@ After building the project, you can use the gocert command-line tool to retrieve
 ./gocert -h
 ```
 
-## Usage
+## Examples
 
 1. Retrieve SSL certificate information for a specific domain:
 
