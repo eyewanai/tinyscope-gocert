@@ -21,6 +21,9 @@ jobs:
       with:
         go-version: '1.22.1'
     
+    - name: Install linting
+      uses: golangci/golangci-lint-action@v4.0.0
+
     - name: Run linting
       run: golangci-lint run
 
