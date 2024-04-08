@@ -25,7 +25,12 @@ This project has been tested on Go version go1.22.1 on Darwin/arm64 architecture
     ```bash
     ./build.sh
     ```
-
+   ! On windows just run:
+   ```bash
+   go build -v -o gocert.exe cmd/gocert/main.go
+   ```
+   It will create gocert.exe file.
+   
 ## Usage
 
 After building the project, you can use the gocert command-line tool to retrieve SSL certificate information. Run the following command to see the available options:
